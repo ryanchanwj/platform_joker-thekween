@@ -1,0 +1,14 @@
+.terraform
+terraform.tfstate
+*.tfstate*
+terraform.tfvars
+out.terraform
+*.tgz
+**/kubeconfig*
+builds/
+
+modules/**/node_modules
+modules/**/build
+modules/**/dist
+
+node_modules/

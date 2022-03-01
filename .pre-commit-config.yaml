@@ -1,0 +1,18 @@
+exclude: |
+  (?x)^(
+    environments/.*|
+  )$
+repos:
+  - repo: https://bitbucket.ship.gov.sg/scm/d3do/pre-commit-terraform.git
+    rev: v1.50.0 # Get the latest from: https://bitbucket.ship.gov.sg/scm/d3do/pre-commit-terraform.git
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_docs
+      - id: terraform_tflint
+        args:
+          - "--args=--config=__GIT_WORKING_DIR__/.tflint.hcl" # Pointing to project root tflint config
+        verbose: true
+      # Passing in of args does not work for --quiet alone, but it works when both --quiet and --compact are passed in
+      # checkov will still run for the whole repo regardless of 'args' and therefore, commenting out the 'args' for now
+      - id: checkov
+        args: [--quiet, --compact]

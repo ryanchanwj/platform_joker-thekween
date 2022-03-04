@@ -3,13 +3,13 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias  = "sg-region"
+  alias  = "ap-southeast-1"
   region = "ap-southeast-1"
 }
 
 provider "aws" {
-  alias  = "hk-region"
-  region = "ap-east-1"
+  alias = "acm_provider"
+  region = "us-east-1"
 }
 
 data "aws_caller_identity" "current" {

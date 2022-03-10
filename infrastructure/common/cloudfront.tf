@@ -12,7 +12,7 @@ resource "aws_cloudfront_distribution" "www_s3_distribution" {
     }
 
     member {
-      origin_id = "S3-failover-www.${var.domain_name_hk}"
+      origin_id = "S3-failover-www.${var.domain_name_tokyo}"
     }
   }
   origin {
@@ -27,8 +27,8 @@ resource "aws_cloudfront_distribution" "www_s3_distribution" {
     }
   }
   origin {
-    domain_name = data.aws_s3_bucket.customer_hk.website_endpoint
-    origin_id = "S3-failover-www.${var.domain_name_hk}"
+    domain_name = data.aws_s3_bucket.customer_tokyo.website_endpoint
+    origin_id = "S3-failover-www.${var.domain_name_tokyo}"
     
     custom_origin_config {
       http_port = 80
@@ -100,7 +100,7 @@ resource "aws_cloudfront_distribution" "root_s3_distribution" {
     }
 
     member {
-      origin_id = "S3-failover-${var.domain_name_hk}"
+      origin_id = "S3-failover-${var.domain_name_tokyo}"
     }
   }
   origin {
@@ -115,8 +115,8 @@ resource "aws_cloudfront_distribution" "root_s3_distribution" {
     }
   }
   origin {
-    domain_name = data.aws_s3_bucket.customer_root_hk.website_endpoint
-    origin_id = "S3-failover-${var.domain_name_hk}"
+    domain_name = data.aws_s3_bucket.customer_root_tokyo.website_endpoint
+    origin_id = "S3-failover-${var.domain_name_tokyo}"
     
     custom_origin_config {
       http_port = 80

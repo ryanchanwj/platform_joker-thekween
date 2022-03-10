@@ -1,6 +1,7 @@
- # IAM role which dictates what other AWS services the Lambda function may access.
+ # IAM role which dictates what other AWS services the Lambda function
+ # may access.
 resource "aws_iam_role" "orders" {
-  name = "serverless_lambda_orders"
+  name = "tokyo_serverless_lambda_orders"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -27,7 +28,7 @@ resource "aws_iam_role_policy_attachment" "dynamodb" {
 }
 
 resource "aws_iam_policy" "dynamodb" {
-  name = "orders_dynamodb"
+  name = "tokyo_orders_dynamodb"
   policy = data.aws_iam_policy_document.dynamodb.json
 }
 

@@ -4,9 +4,9 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "sg-application-tfstate"
+    bucket = "tokyo-application-tfstate"
     key = "static/terraform.tfstate"
-    region = "ap-southeast-1"
+    region = "ap-northeast-1"
   }
 }
 

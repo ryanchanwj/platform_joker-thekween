@@ -18,12 +18,12 @@ data "aws_s3_bucket" "customer_root_sg" {
 }
 
 
-data "aws_s3_bucket" "customer_hk" {
-  provider = "aws.hk-region"
-  bucket = "www.hk.jokerandthekween.click"
+data "aws_s3_bucket" "customer_tokyo" {
+  provider = "aws.tokyo-region"
+  bucket = "www.tokyo.jokerandthekween.click"
 }
 
-data "aws_s3_bucket" "customer_root_hk" {
-  provider = "aws.hk-region"
-  bucket = "hk.jokerandthekween.click"
+data "aws_s3_bucket" "customer_root_tokyo" {
+  provider = "aws.tokyo-region"
+  bucket = "tokyo.jokerandthekween.click"
 }

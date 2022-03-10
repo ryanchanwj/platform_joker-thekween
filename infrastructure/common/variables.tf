@@ -13,7 +13,7 @@ variable "domain_name_sg" {
   type        = string
 }
 
-variable "domain_name_hk" {
+variable "domain_name_tokyo" {
   description = "Domain name for Hong Kong region (Secondary)"
   type        = string
 }

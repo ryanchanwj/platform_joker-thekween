@@ -36,7 +36,7 @@ resource "aws_cognito_user_pool" "user_pool" {
 }
 
 resource "aws_cognito_user_pool_client" "client" {
-  name = "sg-customer-client"
+  name = "tokyo-customer-client"
 
   user_pool_id = aws_cognito_user_pool.user_pool.id
   generate_secret = false
@@ -59,7 +59,7 @@ resource "aws_cognito_user_pool_client" "client" {
 }
 
 resource "aws_cognito_user_pool_domain" "cognito-domain" {
-  domain       = "authsg.jokerandthekween.click"
+  domain       = "authhk.jokerandthekween.click" // Unable to delete old ACM cert, stuck with hk domain
   user_pool_id = "${aws_cognito_user_pool.user_pool.id}"
   certificate_arn = data.aws_acm_certificate.cert.arn
 }

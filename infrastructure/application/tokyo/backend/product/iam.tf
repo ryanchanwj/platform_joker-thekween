@@ -1,4 +1,5 @@
- # IAM role which dictates what other AWS services the Lambda function may access.
+ # IAM role which dictates what other AWS services the Lambda function
+ # may access.
 resource "aws_iam_role" "orders" {
   name = "serverless_lambda_orders"
 

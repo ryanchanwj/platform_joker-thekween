@@ -39,7 +39,7 @@ resource "aws_route53_record" "auth-sg" {
   depends_on = [aws_cloudfront_distribution.www_s3_distribution]
 }
 
-resource "aws_route53_record" "auth-hk" {
+resource "aws_route53_record" "auth-tokyo" {
   zone_id = data.aws_route53_zone.main.zone_id
   name = "authhk.${var.base_domain}"
   type = "A"

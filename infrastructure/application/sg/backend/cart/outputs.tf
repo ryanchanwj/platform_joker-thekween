@@ -5,3 +5,7 @@ output "base_url" {
 output "dynamodb_name" {
   value = module.cart_db.dynamodb_table_id
 }
+
+output "sqs_url" {
+  value = aws_sqs_queue.queue.id
+}

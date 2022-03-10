@@ -1,7 +1,7 @@
  # IAM role which dictates what other AWS services the Lambda function
  # may access.
 resource "aws_iam_role" "orders" {
-  name = "serverless_lambda_orders"
+  name = "hk_serverless_lambda_orders"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

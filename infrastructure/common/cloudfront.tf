@@ -81,6 +81,8 @@ resource "aws_cloudfront_distribution" "www_s3_distribution" {
     minimum_protocol_version = "TLSv1.2_2021"
   }
 
+  # trusted_signers = ["self"]
+
   # depends_on = [aws_acm_certificate.cert]
 }
 

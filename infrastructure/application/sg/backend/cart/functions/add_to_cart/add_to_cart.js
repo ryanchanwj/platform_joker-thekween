@@ -19,7 +19,8 @@ exports.handler = async (event, context) => {
           Id: requestJSON.id,
           ItemName: requestJSON.item_name,
           Price: requestJSON.price,
-          Quantity: requestJSON.quantity
+          Quantity: requestJSON.quantity,
+          ItemId: requestJSON.item_id
         }
       })
       .promise();

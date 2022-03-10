@@ -1,32 +1,27 @@
-resource "aws_s3_bucket_object" "view_orders" {
-  bucket = data.aws_s3_bucket.lambda_functions.id
+module "lambda_view_orders" {
+   source      = "../../../../../modules/lambda"
 
-  key    = "view_orders.zip"
-  source = data.archive_file.view_orders.output_path
-
-  etag = filemd5(data.archive_file.view_orders.output_path)
-}
-
-resource "aws_lambda_function" "view_orders" {
    function_name = "view_orders"
 
-   s3_bucket = data.aws_s3_bucket.lambda_functions.id
-   s3_key    = aws_s3_bucket_object.view_orders.id
+   source_path = "${path.cwd}/functions/view_orders"
+   lambda_role = aws_iam_role.orders.arn
 
-   
-   handler = "view_orders.handler"
    runtime = "nodejs12.x"
+   handler = "view_orders.handler"
 
-   role = aws_iam_role.cart.arn
+
+   depends_on = [
+     aws_iam_role.orders
+   ]
 }
 
 resource "aws_lambda_permission" "view_orders" {
    statement_id  = "AllowAPIGatewayInvoke"
    action        = "lambda:InvokeFunction"
-   function_name = aws_lambda_function.view_orders.function_name
+   function_name = module.lambda_view_orders.function_name
    principal     = "apigateway.amazonaws.com"
 
    # The "/*/*" portion grants access from any method on any resource
    # within the API Gateway REST API.
-   source_arn = "${aws_apigatewayv2_api.cart.execution_arn}/*/*"
+   source_arn = "${aws_apigatewayv2_api.orders.execution_arn}/*/*"
 }

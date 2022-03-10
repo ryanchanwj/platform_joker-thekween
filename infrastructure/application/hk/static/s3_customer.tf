@@ -80,75 +80,85 @@ data "aws_iam_policy_document" "customer" {
   }
 }
 
-#Upload files of your static website
+# #Upload files of your static website
 resource "aws_s3_bucket_object" "html" {
-  for_each = fileset("./serverless-shop/build", "**/*.html")
+  for_each = fileset("./serverless-shop/aws", "**/*.html")
 
   bucket = aws_s3_bucket.customer.bucket
   key    = each.value
-  source = "./serverless-shop/build/${each.value}"
-  etag   = filemd5("./serverless-shop/build/${each.value}")
+  source = "./serverless-shop/aws/${each.value}"
+  etag   = filemd5("./serverless-shop/aws/${each.value}")
   content_type = "text/html"
 }
 
 resource "aws_s3_bucket_object" "ico" {
-  for_each = fileset("./serverless-shop/build", "**/*.ico")
+  for_each = fileset("./serverless-shop/aws", "**/*.ico")
 
   bucket = aws_s3_bucket.customer.bucket
   key    = each.value
-  source = "./serverless-shop/build/${each.value}"
-  etag   = filemd5("./serverless-shop/build/${each.value}")
+  source = "./serverless-shop/aws/${each.value}"
+  etag   = filemd5("./serverless-shop/aws/${each.value}")
   content_type = "image/x-icon"
 }
 
 resource "aws_s3_bucket_object" "svg" {
-  for_each = fileset("./serverless-shop/build", "**/*.svg")
+  for_each = fileset("./serverless-shop/aws", "**/*.svg")
 
   bucket = aws_s3_bucket.customer.bucket
   key    = each.value
-  source = "./serverless-shop/build/${each.value}"
-  etag   = filemd5("./serverless-shop/build/${each.value}")
+  source = "./serverless-shop/aws/${each.value}"
+  etag   = filemd5("./serverless-shop/aws/${each.value}")
   content_type = "image/svg+xml"
 }
 
 resource "aws_s3_bucket_object" "css" {
-  for_each = fileset("./serverless-shop/build", "**/*.css")
+  for_each = fileset("./serverless-shop/aws", "**/*.css")
 
   bucket = aws_s3_bucket.customer.bucket
   key    = each.value
-  source = "./serverless-shop/build/${each.value}"
-  etag   = filemd5("./serverless-shop/build/${each.value}")
+  source = "./serverless-shop/aws/${each.value}"
+  etag   = filemd5("./serverless-shop/aws/${each.value}")
   content_type = "text/css"
 }
 
 resource "aws_s3_bucket_object" "js" {
-  for_each = fileset("./serverless-shop/build", "**/*.js")
+  for_each = fileset("./serverless-shop/aws", "**/*.js")
 
   bucket = aws_s3_bucket.customer.bucket
   key    = each.value
-  source = "./serverless-shop/build/${each.value}"
-  etag   = filemd5("./serverless-shop/build/${each.value}")
+  source = "./serverless-shop/aws/${each.value}"
+  etag   = filemd5("./serverless-shop/aws/${each.value}")
   content_type = "application/javascript"
 }
 
 
 resource "aws_s3_bucket_object" "images" {
-  for_each = fileset("./serverless-shop/build", "**/*.png")
+  for_each = fileset("./serverless-shop/aws", "**/*.png")
 
   bucket = aws_s3_bucket.customer.bucket
   key    = each.value
-  source = "./serverless-shop/build/${each.value}"
-  etag   = filemd5("./serverless-shop/build/${each.value}")
+  source = "./serverless-shop/aws/${each.value}"
+  etag   = filemd5("./serverless-shop/aws/${each.value}")
   content_type = "image/png"
 }
 
 resource "aws_s3_bucket_object" "json" {
-  for_each = fileset("./serverless-shop/build", "**/*.json")
+  for_each = fileset("./serverless-shop/aws", "**/*.json")
 
   bucket = aws_s3_bucket.customer.bucket
   key    = each.value
-  source = "./serverless-shop/build/${each.value}"
-  etag   = filemd5("./serverless-shop/build/${each.value}")
+  source = "./serverless-shop/aws/${each.value}"
+  etag   = filemd5("./serverless-shop/aws/${each.value}")
   content_type = "application/json"
 }
 
+
+# resource "aws_s3_bucket_object" "json" {
+#   for_each = fileset("./serverless-shop/aws", "**")
+
+#   bucket = aws_s3_bucket.customer.bucket
+#   key    = each.value
+#   source = "./serverless-shop/aws/${each.value}"
+#   etag   = filemd5("./serverless-shop/aws/${each.value}")
+#   # content_type = "application/json"
+# }

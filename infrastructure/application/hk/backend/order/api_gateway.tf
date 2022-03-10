@@ -10,7 +10,7 @@ resource "aws_apigatewayv2_stage" "orders" {
   auto_deploy = true
 
   access_log_settings {
-    destination_arn = aws_cloudwatch_log_group.order_api_gw.arn
+    destination_arn = aws_cloudwatch_log_group.orders_api_gw.arn
 
     format = jsonencode({
       requestId               = "$context.requestId"
@@ -30,15 +30,15 @@ resource "aws_apigatewayv2_stage" "orders" {
 
 # Add to order
 resource "aws_apigatewayv2_integration" "create_order" {
-  api_id = aws_apigatewayv2_api.order.id
+  api_id = aws_apigatewayv2_api.orders.id
 
-  integration_uri    = aws_lambda_function.create_order.invoke_arn
+  integration_uri    = module.lambda_create_order.invoke_arn
   integration_type   = "AWS_PROXY"
   integration_method = "POST"
 }
 
 resource "aws_apigatewayv2_route" "create_order" {
-  api_id = aws_apigatewayv2_api.order.id
+  api_id = aws_apigatewayv2_api.orders.id
 
   route_key = "POST /create"
   target    = "integrations/${aws_apigatewayv2_integration.create_order.id}"
@@ -46,15 +46,15 @@ resource "aws_apigatewayv2_route" "create_order" {
 
 # View orders
 resource "aws_apigatewayv2_integration" "view_orders" {
-  api_id = aws_apigatewayv2_api.order.id
+  api_id = aws_apigatewayv2_api.orders.id
 
-  integration_uri    = aws_lambda_function.view_orders.invoke_arn
+  integration_uri    = module.lambda_view_orders.invoke_arn
   integration_type   = "AWS_PROXY"
   integration_method = "POST"
 }
 
 resource "aws_apigatewayv2_route" "view_orders" {
-  api_id = aws_apigatewayv2_api.order.id
+  api_id = aws_apigatewayv2_api.orders.id
 
   route_key = "GET /view"
   target    = "integrations/${aws_apigatewayv2_integration.view_orders.id}"
@@ -62,16 +62,32 @@ resource "aws_apigatewayv2_route" "view_orders" {
 
 # Delete from order
 resource "aws_apigatewayv2_integration" "delete_orders" {
-  api_id = aws_apigatewayv2_api.order.id
+  api_id = aws_apigatewayv2_api.orders.id
 
-  integration_uri    = aws_lambda_function.delete_orders.invoke_arn
+  integration_uri    = module.lambda_delete_orders.invoke_arn
   integration_type   = "AWS_PROXY"
   integration_method = "POST"
 }
 
 resource "aws_apigatewayv2_route" "delete_orders" {
-  api_id = aws_apigatewayv2_api.order.id
+  api_id = aws_apigatewayv2_api.orders.id
 
   route_key = "DELETE /delete"
   target    = "integrations/${aws_apigatewayv2_integration.delete_orders.id}"
+}
+
+# Generate report
+resource "aws_apigatewayv2_integration" "generate_report" {
+  api_id = aws_apigatewayv2_api.orders.id
+
+  integration_uri    = module.lambda_generate_report.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+
+resource "aws_apigatewayv2_route" "generate_report" {
+  api_id = aws_apigatewayv2_api.orders.id
+
+  route_key = "DELETE /delete"
+  target    = "integrations/${aws_apigatewayv2_integration.generate_report.id}"
 }

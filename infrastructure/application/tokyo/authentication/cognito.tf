@@ -2,12 +2,13 @@
 resource "aws_cognito_user_pool" "user_pool" {
   name = "customers"
 
-#   account_recovery_setting {
-#     name = "verified_email"
-#     priority = 1
-#   }
+ account_recovery_setting {
+    recovery_mechanism {
+      name     = "verified_email"
+      priority = 1
+    }
+  }
 
-  # username_attributes = ["email"]
   alias_attributes = ["email"]
   auto_verified_attributes = ["email"]
 
@@ -33,6 +34,13 @@ resource "aws_cognito_user_pool" "user_pool" {
       max_length = 256
     }
   }
+
+  lambda_config {
+    post_confirmation = module.lambda_cross_region.invoke_arn
+  }
+  depends_on = [
+    module.lambda_cross_region.invoke_arn
+  ]
 }
 
 resource "aws_cognito_user_pool_client" "client" {

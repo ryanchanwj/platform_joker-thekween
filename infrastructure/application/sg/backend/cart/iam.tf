@@ -56,9 +56,3 @@ data "aws_iam_policy_document" "dynamodb" {
   }
   depends_on = [module.cart_db]
 }
-
-// SQS Permission
-resource "aws_iam_role_policy_attachment" "lambda_sqs_role_policy" {
-  role       = aws_iam_role.cart.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSQSFullAccess"
-}

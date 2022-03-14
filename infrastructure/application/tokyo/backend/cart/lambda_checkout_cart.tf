@@ -3,7 +3,7 @@ module "lambda_checkout_cart" {
 
    function_name = "checkout_cart"
 
-   source_path = "${path.cwd}/functions/checkout_cart.zip"
+   source_path = "${path.cwd}/functions/checkout_cart"
    lambda_role = aws_iam_role.cart.arn
 
    runtime = "nodejs12.x"

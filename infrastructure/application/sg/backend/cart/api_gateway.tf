@@ -1,7 +1,3 @@
-locals {
-  app_client_id = "71ldv7ceuc4dromcgcvmo35neo" 
-}
-
 resource "aws_apigatewayv2_api" "cart" {
   name          = "serverless_cart_lambda_gw"
   protocol_type = "HTTP"
@@ -39,7 +35,7 @@ resource "aws_apigatewayv2_authorizer" "cart" {
   name             = "cart-cognito-auth"
 
   jwt_configuration {
-    audience = [local.app_client_id]
+    audience = [var.app_client_id]
     issuer   = "https://cognito-idp.${var.aws_region}.amazonaws.com/${tolist(data.aws_cognito_user_pools.user_pools.ids)[0]}"
   }
 }

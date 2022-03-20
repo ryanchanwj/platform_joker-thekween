@@ -1,7 +1,7 @@
-module "orders_db" {
+module "product_db" {
   source      = "../../../../../modules/dynamodb"
 
-  name_suffix = "orders_db"
+  name_suffix = "product_db"
 
   billing_mode   = "PAY_PER_REQUEST"
   read_capacity  = 0
@@ -31,18 +31,17 @@ module "orders_db" {
 
 #   point_in_time_recovery_enabled = true
   
-  hash_key  = "UserId"
-  range_key = "Id"
+  hash_key  = "ProductId"
 
   attributes = [
     {
-      name = "UserId"
+      name = "ProductId"
       type = "N"
     },
-    {
-      name = "Id"
-      type = "N"
-    },
+    # {
+    #   name = "Id"
+    #   type = "N"
+    # },
     # {
     #   name = "Price"
     #   type = "N"

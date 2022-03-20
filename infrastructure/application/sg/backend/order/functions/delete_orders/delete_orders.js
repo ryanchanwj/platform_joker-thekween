@@ -3,38 +3,31 @@ const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event, context) => {
-  let body;
-  let statusCode = 200;
-  const headers = {
-    "Content-Type": "application/json"
-  };
+  let body;  
 
-  try {
-    let requestJSON = JSON.parse(event.body);
-    const params = {
-      TableName : 'orders_db',
-      Key: {
-        UserId: requestJSON.user_id,
-        Id: requestJSON.id,
-      }
+  let requestJSON = JSON.parse(event.body);
+  let username = requestJSON.username
+  let id = requestJSON.id
+
+  // let username = event.username
+  // let id = event.id
+
+  const params = {
+    TableName : 'orders_db',
+    Key: {
+      Username: username,
+      Id: id,
     }
-    
-    await dynamo
-        .delete(params)
-        .promise();
-          
-    body = `Successfully removed id ${requestJSON.id} for userid ${requestJSON.user_id}`;
-  } catch (err) {
-    statusCode = 400;
-    body = err.message;
-  } finally {
-    body = JSON.stringify(body);
   }
+  
+  await dynamo
+      .delete(params)
+      .promise();
+        
+  body = `Successfully removed order id ${id} for ${username}`;
+  
+  body = JSON.stringify(body);
 
-  return {
-    statusCode, 
-    body,
-    headers
-  };
+  return body
 };
 

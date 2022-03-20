@@ -6,9 +6,16 @@ module "lambda_generate_report" {
    source_path = "${path.cwd}/functions/generate_report"
    lambda_role = aws_iam_role.orders.arn
 
-   runtime = "python3.8"
+   runtime = "nodejs12.x"
    handler = "generate_report.handler"
-
+   
+   environment_variables = {
+      S3Bucket      = var.s3_reports
+      MailSender    = aws_ses_email_identity.email.email
+      MailRecipient = aws_ses_email_identity.email.email
+      AWSRegion     = var.aws_region
+      GET_PRODUCTS_LAMBDA = data.aws_lambda_function.get_products.arn,
+   }
 
    depends_on = [
      aws_iam_role.orders

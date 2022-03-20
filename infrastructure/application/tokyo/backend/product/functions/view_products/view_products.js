@@ -3,35 +3,37 @@ const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event, context) => {
-  let body;
-  let statusCode = 200;
-  const headers = {
-    "Content-Type": "application/json"
-  };
-
-  try {
-    let requestJSON = JSON.parse(event.body);
-    var params = {
-        KeyConditionExpression: 'UserId = :userid',
-        ExpressionAttributeValues: {
-            ':userid': requestJSON.user_id
-        },
-        TableName: "orders_db"
+    const headers = {
+        "Content-Type": "application/json"
     };
-    body = await dynamo.query(params).promise()
-    console.log(JSON.stringify(body))
+    let statusCode = 200;
+    let message;
+    let data; 
+    try {
+        const params = {
+            // Set the projection expression, which are the attributes that you want.
+            ProjectionExpression: "ProductId, ProductName, Price, Rating, Quantity, ImageURL",
+            TableName: "product_db",
+        };
+    
+        data = await dynamo.scan(params).promise()
+        message = 'Products retrieved successfully!'
+    } catch (err) {
+        statusCode = 406;
+        message = err.message;
+        data = err;
+    }
 
-  } catch (err) {
-    statusCode = 400;
-    body = err.message;
-  } finally {
-    body = JSON.stringify(body);
-  }
+    let body = JSON.stringify({
+        statusCode: statusCode,
+        message: message,
+        data: data
+    });
 
-  return {
-    statusCode, 
-    body,
-    headers
-  };
+    return {
+        headers,
+        statusCode,
+        body
+    }
 };
 

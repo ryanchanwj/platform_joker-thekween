@@ -31,35 +31,17 @@ module "orders_db" {
 
 #   point_in_time_recovery_enabled = true
   
-  hash_key  = "UserId"
+  hash_key  = "Username"
   range_key = "Id"
 
   attributes = [
     {
-      name = "UserId"
-      type = "N"
+      name = "Username"
+      type = "S"
     },
     {
       name = "Id"
       type = "N"
     },
-    # {
-    #   name = "Price"
-    #   type = "N"
-    # },
-    # {
-    #   name = "Quantity"
-    #   type = "N"
-    # }
   ]
-
-#   global_secondary_indexes = [
-#     {
-#       name               = "UserIndex"
-#       hash_key           = "UserId"
-#       range_key          = "UserId"
-#       projection_type    = "INCLUDE"
-#       non_key_attributes = ["Price", "Quantity"]
-#     }
-#   ]
 }

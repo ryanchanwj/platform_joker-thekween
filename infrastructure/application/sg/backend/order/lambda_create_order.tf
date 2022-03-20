@@ -9,6 +9,9 @@ module "lambda_create_order" {
    runtime = "nodejs12.x"
    handler = "create_order.handler"
 
+   environment_variables = {
+      MAIL_SENDER = aws_ses_email_identity.email.email
+   }
 
    depends_on = [
      aws_iam_role.orders

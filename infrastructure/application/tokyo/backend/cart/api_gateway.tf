@@ -1,6 +1,11 @@
 resource "aws_apigatewayv2_api" "cart" {
   name          = "serverless_cart_lambda_gw"
   protocol_type = "HTTP"
+  cors_configuration {
+    allow_origins = ["http://www.jokerandthekween.click", "https://www.jokerandthekween.click", "http://localhost"]
+    allow_methods = ["POST", "GET", "PUT", "DELETE", "OPTIONS"]
+    allow_headers = ["*"]
+  }
 }
 
 resource "aws_apigatewayv2_stage" "cart" {
@@ -72,7 +77,7 @@ resource "aws_apigatewayv2_integration" "update_cart" {
 resource "aws_apigatewayv2_route" "update_cart" {
   api_id = aws_apigatewayv2_api.cart.id
 
-  route_key = "POST /update"
+  route_key = "PUT /update"
   target    = "integrations/${aws_apigatewayv2_integration.update_cart.id}"
 
   authorization_type = "JWT" 

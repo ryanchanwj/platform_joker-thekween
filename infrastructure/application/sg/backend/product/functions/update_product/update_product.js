@@ -3,50 +3,64 @@ const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event, context) => {
-  let body;
-  let statusCode = 200;
-  const headers = {
-    "Content-Type": "application/json"
-  };
+    const req = JSON.parse(event.body)
+    const headers = {
+        "Content-Type": "application/json"
+    };
+    let statusCode = 200;
+    let message;
+    let data;
 
-  try {
-    let requestJSON = JSON.parse(event.body);
-    const params = {
-      TableName : 'cart_db',
-      Key: {
-        UserId: requestJSON.user_id,
-        Id: requestJSON.id,
-      }
-    }
-    
-    body = await dynamo
-          .get(params)
-          .promise();
-          
-    await dynamo
-      .put({
-        TableName: "cart_db",
-        Item: {
-          UserId: requestJSON.user_id,
-          Id: requestJSON.id,
-          ItemName: body.Item.ItemName,
-          Price: body.Item.Price,
-          Quantity: requestJSON.quantity
+    try {    
+        const params = {
+            TableName : 'product_db',
+            Key: {
+              ProductId: req.product_id,
+            }
         }
-      })
-      .promise();
-    body = `ID ${requestJSON.id}: Successfully updated item ${body.Item.ItemName} quantity to ${requestJSON.quantity} for userid ${requestJSON.user_id}`;
-  } catch (err) {
-    statusCode = 400;
-    body = err.message;
-  } finally {
-    body = JSON.stringify(body);
-  }
+        
+        const result = await dynamo
+                            .get(params)
+                            .promise();
+                    
+		if (!result.Count) {
+			throw new Error(`Product ID ${req.product_id} does not exist!`)
+		}
+                
+        const updateDao = {
+            ProductId: req.product_id,
+            ProductName: req.product_name,
+            Price: req.price,
+            Rating: result.Item.Rating,
+            Quantity: req.quantity,
+            ImageUrl: req.image_url
+        }
+        await dynamo
+            .put({
+                TableName: "product_db",
+                Item: updateDao
+            })
+            .promise();
+        
+        message = `ID ${updateDao.ProductId}: Successfully updated product ${updateDao.ProductName} of quantity ${updateDao.Quantity} and price ${updateDao.Price}`;
+        data = updateDao;
+    } catch (err) {
+        statusCode = 406;
+        message = err.message;
+        data = err;
+        
+    }
 
-  return {
-    statusCode, 
-    body,
-    headers
-  };
+    let body = JSON.stringify({
+        statusCode: statusCode,
+        message: message,
+        data: data
+    });
+
+    return {
+        headers,
+        statusCode,
+        body
+    }
 };
 

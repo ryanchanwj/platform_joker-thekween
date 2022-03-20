@@ -4,38 +4,40 @@ const dynamo = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event, context) => {
   let body;
-  let statusCode = 200;
-  const headers = {
-    "Content-Type": "application/json"
-  };
 
-  try {
-    let requestJSON = JSON.parse(event.body);
-    await dynamo
-      .put({
-        TableName: "cart_db",
-        Item: {
-          UserId: requestJSON.user_id,
-          Id: requestJSON.id,
-          ItemName: requestJSON.item_name,
-          Price: requestJSON.price,
-          Quantity: requestJSON.quantity,
-          ItemId: requestJSON.item_id
-        }
-      })
-      .promise();
-    body = `ID ${requestJSON.id}: Successfully added item '${requestJSON.item_name}' of quantity '${requestJSON.quantity}' for UserId ${requestJSON.user_id}`;
-  } catch (err) {
-    statusCode = 400;
-    body = err.message;
-  } finally {
-    body = JSON.stringify(body);
-  }
+  let requestJSON = JSON.parse(event.body);
+  let username = requestJSON.username
+  let id = requestJSON.id
+  let itemname = requestJSON.item_name
+  let price = requestJSON.price
+  let quantity = requestJSON.quantity
+  let itemid = requestJSON.item_id
 
-  return {
-    statusCode,
-    body,
-    headers
-  };
+  // let username = event.username
+  // let id = event.id
+  // let itemname = event.item_name
+  // let price = event.price
+  // let quantity = event.quantity
+  // let itemid = event.item_id
+
+  await dynamo
+    .put({
+      TableName: "cart_db",
+      Item: {
+        Username: username,
+        Id: id,
+        ItemName: itemname,
+        Price: price,
+        Quantity: quantity,
+        ItemId: itemid
+      }
+    })
+    .promise();
+    
+  body = `ID ${id}: Successfully added item '${itemname}' of quantity '${quantity}' for ${username}`;
+  
+  body = JSON.stringify(body);
+
+  return body
 };
 

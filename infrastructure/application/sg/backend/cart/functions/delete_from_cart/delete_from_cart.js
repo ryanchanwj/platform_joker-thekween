@@ -4,37 +4,32 @@ const dynamo = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event, context) => {
   let body;
-  let statusCode = 200;
-  const headers = {
-    "Content-Type": "application/json"
-  };
 
-  try {
-    let requestJSON = JSON.parse(event.body);
-    const params = {
-      TableName : 'cart_db',
-      Key: {
-        UserId: requestJSON.user_id,
-        Id: requestJSON.id,
-      }
+  let requestJSON = JSON.parse(event.body);
+  let username = requestJSON.username
+  let id = requestJSON.id
+
+  // let username = event.username
+  // let id = event.id
+
+  const params = {
+    TableName : 'cart_db',
+    Key: {
+      // UserId: requestJSON.username,
+      // Id: requestJSON.id,
+      Username: username,
+      Id: id,
     }
-    
-    await dynamo
-        .delete(params)
-        .promise();
-          
-    body = `Successfully removed id ${requestJSON.id} for userid ${requestJSON.user_id}`;
-  } catch (err) {
-    statusCode = 400;
-    body = err.message;
-  } finally {
-    body = JSON.stringify(body);
   }
+  
+  await dynamo
+      .delete(params)
+      .promise();
+        
+  body = `Successfully removed id ${id} for ${username}`;
 
-  return {
-    statusCode, 
-    body,
-    headers
-  };
+  body = JSON.stringify(body);
+
+  return body
 };
 

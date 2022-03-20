@@ -31,13 +31,13 @@ module "cart_db" {
 
 #   point_in_time_recovery_enabled = true
   
-  hash_key  = "UserId"
+  hash_key  = "Username"
   range_key = "Id"
 
   attributes = [
     {
-      name = "UserId"
-      type = "N"
+      name = "Username"
+      type = "S"
     },
     {
       name = "Id"

@@ -1,6 +1,6 @@
  # IAM role which dictates what other AWS services the Lambda function may access.
-resource "aws_iam_role" "orders" {
-  name = "serverless_lambda_orders"
+resource "aws_iam_role" "product" {
+  name = "serverless_lambda_product"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -17,17 +17,17 @@ resource "aws_iam_role" "orders" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
-  role       = aws_iam_role.orders.name
+  role       = aws_iam_role.product.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_iam_role_policy_attachment" "dynamodb" {
-  role       = aws_iam_role.orders.name
+  role       = aws_iam_role.product.name
   policy_arn = aws_iam_policy.dynamodb.arn
 }
 
 resource "aws_iam_policy" "dynamodb" {
-  name = "orders_dynamodb"
+  name = "product_dynamodb"
   policy = data.aws_iam_policy_document.dynamodb.json
 }
 
@@ -49,8 +49,8 @@ data "aws_iam_policy_document" "dynamodb" {
     ]
 
     resources = [
-      module.orders_db.dynamodb_table_arn,
+      module.product_db.dynamodb_table_arn,
     ]
   }
-  depends_on = [module.orders_db]
+  depends_on = [module.product_db]
 }

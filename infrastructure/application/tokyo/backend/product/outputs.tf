@@ -1,7 +1,7 @@
 output "base_url" {
-  value = aws_apigatewayv2_stage.orders.invoke_url
+  value = aws_apigatewayv2_stage.product.invoke_url
 }
 
 output "dynamodb_name" {
-  value = module.orders_db.dynamodb_table_id
+  value = module.product_db.dynamodb_table_id
 }

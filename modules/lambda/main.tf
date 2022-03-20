@@ -11,6 +11,8 @@ module "this" {
     path = var.source_path,
   }]
 
+  create_package = var.create_package
+
   create_role = false
   lambda_role = var.lambda_role
 

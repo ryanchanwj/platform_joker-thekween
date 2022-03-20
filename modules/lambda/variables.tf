@@ -17,8 +17,20 @@ variable "function_name" {
   type        = string
 }
 
+variable "create_package" {
+  description = "Controls whether Lambda package should be created"
+  type        = bool
+  default     = true
+}
+
 variable "description" {
   description = "The description of the Lambda function"
+  type        = string
+  default     = null
+}
+
+variable "local_existing_package" {
+  description = "The absolute path to an existing zip-file to use"
   type        = string
   default     = null
 }
@@ -31,6 +43,7 @@ variable "handler" {
 variable "source_path" {
   description = "The absolute path to a local file or directory containing your Lambda source code. Value is strictly set to path.module/cf-lambda if enable_security_headers or enable_single_page_application variable is true."
   type        = string
+  default     = null
 }
 
 variable "runtime" {

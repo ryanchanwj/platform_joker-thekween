@@ -1,5 +1,5 @@
 module "lambda_cross_region" {
-   source      = "../../../../modules/lambda"
+   source      = "../../../../../modules/lambda"
 
    function_name = "cognito_cross_region"
 
